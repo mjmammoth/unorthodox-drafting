@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
-import { HeroSlider } from "./hero-slider"
+"use client"
+
+import React, { useState, useEffect } from 'react';
+import { HeroSlider } from "./HeroSlider"
 // import { HeroAvatar } from "./hero-avatar"
-import { HeroCard } from "./hero-card"
+import { HeroCard } from "./HeroList"
 
 
-async function fetchHeroes() {
-  const res = await fetch("https://api.opendota.com/api/heroes");
-  return res.json();
-}
-
-export async function Heroes() {
+export function Heroes() {
   const [sliderValue, setSliderValue] = useState(5);
-  const heroData = await fetchHeroes();
+  const [heroes, setHeroes] = useState([]);
 
   const handleSliderChange = (value) => {
     setSliderValue(value);

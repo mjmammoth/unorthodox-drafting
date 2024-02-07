@@ -11,18 +11,7 @@ interface HeroProps {
   legs: number;
 }
 
-async function fetchHeroes() {
-  const response = await fetch('https://api.opendota.com/api/heroes');
-  if (!response.ok) {
-    throw new Error('Failed to fetch heroes');
-  }
-  return response.json();
-}
-
-export function HeroList({ heroes }: { heroes: HeroProps[] }) {
-  
-
-function HeroCard({ hero }: HeroProps) {
+export function HeroCard({ hero }: HeroProps) {
   const heroName = hero.localized_name;
   const formattedName = heroName.toLowerCase().replace(/\s+/g, "_").replace(/-/g, "");
   const portraitUrl = `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${formattedName}.png`;
