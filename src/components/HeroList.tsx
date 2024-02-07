@@ -11,7 +11,11 @@ interface HeroProps {
   legs: number;
 }
 
-export function HeroCard({ hero }) {
+interface HeroCardProps {
+  hero: HeroProps;
+}
+
+export function HeroCard({ hero }: HeroCardProps ) {
   const heroName = hero.localized_name;
   const formattedName = heroName.toLowerCase().replace(/\s+/g, "_").replace(/-/g, "");
   const portraitUrl = `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${formattedName}.png`;
