@@ -3,7 +3,11 @@
 import React, { useState } from 'react';
 import { Slider } from "@/components/ui/slider";
 
-export function HeroSlider({ onSliderValueChange }) {
+interface HeroSliderProps {
+  onSliderValueChange: (value: number | number[]) => void;
+}
+
+export function HeroSlider({ onSliderValueChange }: HeroSliderProps) {
   const [value, setValue] = useState([5]);
   const handleChange = (newValue) => {
     setValue(newValue);
