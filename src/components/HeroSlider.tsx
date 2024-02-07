@@ -8,8 +8,8 @@ interface HeroSliderProps {
 }
 
 export function HeroSlider({ onSliderValueChange }: HeroSliderProps) {
-  const [value, setValue] = useState([5]);
-  const handleChange = (newValue) => {
+  const [value, setValue] = useState<number | number[]>([5]);
+  const handleChange = (newValue : number | number[]) => {
     setValue(newValue);
     onSliderValueChange(newValue);
   };
