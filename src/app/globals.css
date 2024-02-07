@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #ffffff;
+}
+
+.lifted-card {
+  background-color: #424242;
+}
+
+.svg-icon path {
+  fill: #1A977D;
+}
+
+@media (prefers-color-scheme: dark) {
+  .svg-icon path {
+    fill: #1A977D;
+  }
+}
+
+/* Override background color for dark mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1E1E1E;
+  }
+}
+
+/* Light mode styles */
+.bg-gradient {
+  background-image: linear-gradient(to top right, #3B82F6, #10B981);
+}
+
+/* Dark mode styles */
+/* @media (prefers-color-scheme: dark) { */
+/*   .bg-gradient { */
+/*     background-image: linear-gradient(to top right, #52659D, #72BA65); */
+/*   } */
+/* } */
+
+/* Light mode ring color */
+.avatar-ring {
+  box-shadow: 0 0 3px 3px rgba(75, 75, 75, 0.5);
+}
+
+.avatars-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px; /* Adjust based on your design */
+  justify-content: center;
+  padding: 0 10px; /* Adds some padding on smaller screens */
+}
