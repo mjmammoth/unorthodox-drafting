@@ -4,14 +4,15 @@ import React, { useState } from 'react';
 import { Slider } from "@/components/ui/slider";
 
 interface HeroSliderProps {
-  onSliderValueChange: (value: number | number[]) => void;
+  onSliderValueChange: (value: number) => void;
 }
 
 export function HeroSlider({ onSliderValueChange }: HeroSliderProps) {
-  const [value, setValue] = useState<number | number[]>([5]);
-  const handleChange = (newValue : number | number[]) => {
+  const [value, setValue] = useState<number[]>([5]);
+
+  const handleChange = (newValue : number[]) => {
     setValue(newValue);
-    onSliderValueChange(newValue);
+    onSliderValueChange(newValue[0]);
   };
   return (
     <section className="w-full max-w-md mx-auto p-4 md:p-6">

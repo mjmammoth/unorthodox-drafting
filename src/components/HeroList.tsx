@@ -1,19 +1,6 @@
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { CardContent, Card } from "@/components/ui/card"
-
-interface HeroProps {
-  id: number;
-  name: string;
-  localized_name: string;
-  primary_attr: string;
-  attack_type: string;
-  roles: string[];
-  legs: number;
-}
-
-interface HeroCardProps {
-  hero: HeroProps;
-}
+import { HeroCardProps } from "./heroes"
 
 export function HeroCard({ hero }: HeroCardProps ) {
   const heroName = hero.localized_name;

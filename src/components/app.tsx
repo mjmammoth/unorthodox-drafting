@@ -81,10 +81,8 @@ export function App() {
         </div>
         <div className="absolute top-2 right-2 flex space-x-2">
           <Button size="icon" variant="ghost">
-            <RefreshCwIcon className="h-5 w-5" />
           </Button>
           <Button size="icon" variant="ghost">
-            <ShuffleIcon className="h-5 w-5" />
           </Button>
         </div>
       </div>
@@ -94,7 +92,6 @@ export function App() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <InfoIcon className="h-5 w-5 ml-2" />
               </TooltipTrigger>
               <TooltipContent>
                 <p>More information will be available once the team is locked in.</p>
@@ -104,74 +101,5 @@ export function App() {
         </span>
       </Button>
     </div>
-  )
-}
-
-
-function RefreshCwIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 12a9 9 0 1 9-9 9.75 6.74 2.74L21 8" />
-      <path d="M21 3v5h-5" />
-      <path d="M21 12a9 9 0 1-9 9.75 1-6.74-2.74L3 16" />
-      <path d="M8 16H3v5" />
-    </svg>
-  )
-}
-
-
-function ShuffleIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22" />
-      <path d="m18 2 4 4-4" />
-      <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2" />
-      <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8" />
-      <path d="m18 14 4 4-4" />
-    </svg>
-  )
-}
-
-
-function InfoIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </svg>
   )
 }

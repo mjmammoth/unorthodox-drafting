@@ -5,12 +5,25 @@ import { HeroSlider } from "./HeroSlider"
 // import { HeroAvatar } from "./hero-avatar"
 import { HeroCard } from "./HeroList"
 
+interface HeroProps {
+  id: number;
+  name: string;
+  localized_name: string;
+  primary_attr: string;
+  attack_type: string;
+  roles: string[];
+  legs: number;
+}
+
+export interface HeroCardProps {
+  hero: HeroProps;
+}
 
 export function Heroes() {
-  const [sliderValue, setSliderValue] = useState(5);
+  const [sliderValue, setSliderValue] = useState<number>(5);
   const [heroes, setHeroes] = useState([]);
 
-  const handleSliderChange = (value) => {
+  const handleSliderChange = (value : number) => {
     setSliderValue(value);
   };
 
@@ -22,7 +35,7 @@ export function Heroes() {
       });
   }, []);
 
-  const displayHeroes = heroes.slice(0, sliderValue).map((hero, index) => (
+  const displayHeroes = heroes.slice(0, sliderValue).map((hero : HeroProps, index) => (
     <HeroCard key={hero.id} hero={hero} />
   ));
 
