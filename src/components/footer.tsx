@@ -12,10 +12,10 @@ export function Footer() {
         <div className="container grid items-center justify-center gap-4 px-4 md:px-6 lg:gap-10">
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-              Support Our Journey: Unconventional Drafting
+              Support Our Journey
             </h2>
             <p className="mx-auto max-w-[600px] text-gray-500 md:text-md lg:text-base xl:text-base dark:text-gray-400">
-              Your donation helps us continue our mission to provide creative and unconventional drafting solutions.
+              Your donation helps us continue our mission to provide creative and unorthodox drafting solutions.
             </p>
           </div>
           <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">

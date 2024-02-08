@@ -5,7 +5,7 @@ export function Header() {
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
             <h1 className="text-4xl font-bold tracking-tighter text-white sm:text-5xl md:text-6xl lg:text-7xl">
-              Unconventional Drafting
+              Unorthodox Drafting
             </h1>
             <p className="mx-auto max-w-[700px] text-gray-100 md:text-xl">
               for Dota 2
