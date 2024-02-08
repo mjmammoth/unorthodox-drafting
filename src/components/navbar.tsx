@@ -1,13 +1,13 @@
 import Link from "next/link"
-import { TechMammothIcon, FileQuestionIcon, InfoIcon } from "../components/icons";
+import { FirebookIcon, FileQuestionIcon, InfoIcon } from "../components/icons";
 
 export function NavBar() {
   return (
     <>
-      <header className="flex h-10 w-full items-center px-4 md:px-6">
-        <Link className="mr-6" href="mammoth">
-          <TechMammothIcon wh="38"/>
-          <span className="sr-only">LudicrousDrafts</span>
+      <header className="flex h-10 w-full items-center px-4 md:px-6 bg-gradient-to-r from-cyan-500 to-blue-500">
+        <Link className="mr-6" href="#">
+          <FirebookIcon wh="38"/>
+          <span className="sr-only">Unorthodox Drafting</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
           <Link

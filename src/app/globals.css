@@ -28,9 +28,9 @@ body {
 }
 
 /* Light mode styles */
-.bg-gradient {
-  background-image: linear-gradient(to top right, #3B82F6, #10B981);
-}
+/* .bg-gradient { */
+/*   background-image: linear-gradient(to top right, #3B82F6, #10B981); */
+/* } */
 
 /* Dark mode styles */
 /* @media (prefers-color-scheme: dark) { */

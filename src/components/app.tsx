@@ -8,7 +8,7 @@ export function App() {
   return (
     <div key="1" className="flex flex-col items-center justify-center m-8">
       <div className="w-full max-w-2xl p-4 rounded-lg shadow-inner mt-4 relative dark:bg-stone-100">
-        <h2 className="text-2xl font-bold mb-2 flex justify-between items-center">Filters</h2>
+        <h2 className="text-2xl font-bold mb-2 flex justify-between items-center text-gray-800">Filters</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Colour Scheme</label>
@@ -20,14 +20,14 @@ export function App() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Lower Limbs</label>
-            <select className="mt-1 block w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
+            <select className="mt-1 block text-gray-700 w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
               <option>Legs</option>
               <option>No Legs</option>
             </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Flying</label>
-            <select className="mt-1 block w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
+            <select className="mt-1 block text-gray-700 w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
               <option>Yes</option>
               <option>No preference</option>
               <option>No</option>
@@ -44,7 +44,7 @@ export function App() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Elemental Affinity</label>
-            <select className="mt-1 block w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
+            <select className="mt-1 block text-gray-700 w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
               <option>Fire</option>
               <option>Water</option>
               <option>Air</option>
@@ -54,7 +54,7 @@ export function App() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Zoo</label>
-            <select className="mt-1 block w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
+            <select className="mt-1 block text-gray-700 w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
               <option>None</option>
               <option>Default</option>
               <option>Some</option>
@@ -63,7 +63,7 @@ export function App() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Roles</label>
-            <select className="mt-1 block w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
+            <select className="mt-1 block text-gray-700 w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
               <option>Balanced</option>
               <option>Carries</option>
               <option>Supports</option>
@@ -72,7 +72,7 @@ export function App() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Headwear</label>
-            <select className="mt-1 block w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
+            <select className="mt-1 block text-gray-700 w-full py-2 px-3 border border-gray-200 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:border-gray-800">
               <option>None</option>
               <option>A little</option>
               <option>A lot</option>
