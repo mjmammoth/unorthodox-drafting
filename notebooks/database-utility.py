@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import logging
 import argparse
@@ -7,7 +8,8 @@ import datetime
 
 import colorlog
 from dotenv import load_dotenv
-import libsql_experimental as libsql
+import sqlite3
+import sqlite_vss
 
 LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "DEBUG").upper()
 LOG_FORMAT = "%(log_color)s%(asctime)s %(levelname)s: %(name)s: %(reset)s%(message_log_color)s%(message)s"  # noqa: E501
@@ -61,45 +63,70 @@ tables = {
     "vss_colours": "CREATE VIRTUAL TABLE IF NOT EXISTS vss_colours USING vss0(rgb_vector(3));"
 }
 
+load_dotenv(".env")
+url = os.getenv("LIBSQL_URL", "http://127.0.0.1:8080")
+auth_token = os.getenv("LIBSQL_AUTH_TOKEN", "")
+libsql_conn_mode = os.getenv("LIBSQL_MODE", "local")
+database_driver = os.getenv("DATABASE_DRIVER", "sqlite")
+db_name = os.getenv("DATABASE_NAME")
+
 
 class DatabaseUtility:
     def __init__(self):
-        load_dotenv(".env.local")
-        url = os.getenv("LIBSQL_URL", "http://127.0.01:8080")
-        auth_token = os.getenv("LIBSQL_AUTH_TOKEN", "")
-        connection_mode = os.getenv("LIBSQL_MODE", "sync")
+        if database_driver == "sqlite":
+            self.connect_sqlite(db_name)
+        elif database_driver == "libsql":
+            self.connect_libsql(url, auth_token, libsql_conn_mode)
 
-        if connection_mode == "remote":
+        self.cursor = self.connection.cursor()
+
+        # db = sqlite3.connect(':memory:')
+        # db.enable_load_extension(True)
+        # sqlite_vss.load(db)
+        # db.enable_load_extension(False)
+    def connect_sqlite(self, db_name):
+        db_name = db_name if db_name else "local_sqlite.db"
+        self.connection = sqlite3.connect(db_name)
+        self.connection.enable_load_extension(True)
+        sqlite_vss.load(self.connection)
+        self.connection.enable_load_extension(False)
+
+    def connect_libsql(self, url, auth_token, libsql_conn_mode, db_name = "local_libsql.db"):
+        import libsql_experimental as libsql
+        db_name = db_name if db_name else "local_libsql.db"
+        if libsql_conn_mode == "remote":
             print("Connecting to remote database")
             self.connection = libsql.connect(database=url, auth_token=auth_token)
-        elif connection_mode == "sync":
+        elif libsql_conn_mode == "memory":
+            print("Connecting to in-memory database")
+            self.connection = libsql.connect(":memory:")
+        elif libsql_conn_mode == "local":
+            print("Connecting to local database")
+            self.connection = libsql.connect(db_name)
+        elif libsql_conn_mode == "remote_sync":
             print("Connecting to local database with remote sync")
             self.connection = libsql.connect("localsync.db", sync_url=url, auth_token=auth_token)
             self.connection.sync()
-
-        self.cursor = self.connection.cursor()
 
     def create_tables(self):
         logging.info("Creating the tables in the database")
         for table_name, table_query in tables.items():
             self.cursor.execute(table_query)
-        self.list_schema()
 
     def populate_database(self):
         logging.info("Populating the database from the JSON file")
         with open("heroes.json") as file:
             heroes = json.load(file)
         rowid = 1
+        hero_id = 1
         for hero in heroes:
             self.cursor.execute('''
-            INSERT INTO heroes (hero_name, hero_image_path, created_at) VALUES (?, ?, ?)
-            ''', (hero['name'], hero['hero_image_path'], datetime.datetime.now()))
-            hero_id = self.cursor.lastrowid
+            INSERT INTO heroes (hero_name, hero_image_path) VALUES (?, ?)
+            ''', (hero['name'], hero['hero_image_path']))
 
             # For each colour type, insert the colour data into the colours table and the vector data into the vss_colours table
             for color_type in ['primary_colours', 'secondary_colours', 'tertiary_colours']:
                 for color in hero[color_type]:
-                    rgb_str = rgb_to_string(color)
                     color_json = json.dumps(color)
 
                     self.cursor.execute('''
@@ -115,6 +142,15 @@ class DatabaseUtility:
                     ''', (hero_id, rowid, color_type[:-8]))
 
                     rowid += 1
+            hero_id += 1
+            print('Boutta let loose: ', hero_id)
+        self.connection.commit()
+
+
+    def select_vss_version(self):
+        self.cursor.execute("SELECT vss_version();")
+        version = self.cursor.fetchone()
+        logging.info(f"VSS version: {version[0]}")
 
     def get_random_vector(self):
         return [random.randint(0, 255) for _ in range(3)]
@@ -123,6 +159,10 @@ class DatabaseUtility:
         logging.info("Querying the vector database with a random RGB vector")
         vector = self.get_random_vector()
         logging.info(f"Random vector: {vector}")
+        self.query_vector(vector)
+
+    def query_red_vector(self):
+        vector = [255, 0, 0]
         self.query_vector(vector)
 
     def query_vector(self, vector):
@@ -155,58 +195,82 @@ class DatabaseUtility:
 
 
 if __name__ == "__main__":
-    # setup_connection()
     parser = argparse.ArgumentParser(description="Database Management Utility")
     parser.add_argument(
-        "-c",
-        "--create",
+        "-c", "--create",
         help="Create the database",
         action="store_true",
     )
     parser.add_argument(
-        "-p",
-        "--populate",
+        "-p", "--populate",
         help="Populate the database from the JSON file",
         action="store_true",
     )
     parser.add_argument(
-        "-d",
-        "--delete",
+        "-d", "--delete",
         help="Delete the database",
         action="store_true",
     )
     parser.add_argument(
-        "-r",
-        "--recreate",
+        "-r", "--recreate",
         help="Delete, recreate and populate the database",
         action="store_true",
     )
     parser.add_argument(
-        "-l",
-        "--list",
+        "-l", "--list",
         help="List the schema of the database",
         action="store_true",
     )
     parser.add_argument(
-        "-q",
-        "--query",
+        "-q", "--query",
         help="Query the vector database with a random RGB vector",
         action="store_true",
     )
+    parser.add_argument(
+        "-qr", "--query-red",
+        help="Query the vector database with a RED RGB vector",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-dr", "--database-driver",
+        help="The database driver to use (sqlite or libsql)",
+        choices=["sqlite", "libsql"],
+        default="sqlite",
+    )
+    parser.add_argument(
+        "-lm", "--libsql-mode",
+        help="The database driver to use (sqlite or libsql)",
+        choices=["remote", "remote_sync", "local", "memory"],
+        default="local",
+    )
+    parser.add_argument(
+        "-sv", "--show-vss-version",
+        help="Show the VSS extension version",
+        action="store_true",
+    )
     args = parser.parse_args()
+
+    if args.database_driver: database_driver = args.database_driver
+    if args.libsql_mode: libsql_conn_mode = args.libsql_mode
+
     if args.create:
         DatabaseUtility().create_tables()
+    elif args.show_vss_version:
+        DatabaseUtility().select_vss_version()
     elif args.populate:
         DatabaseUtility().populate_database()
     elif args.delete:
         DatabaseUtility().delete_tables()
     elif args.recreate:
-        DatabaseUtility().delete_tables()
-        DatabaseUtility().create_tables()
-        DatabaseUtility().populate_database()
+        database = DatabaseUtility()
+        database.delete_tables()
+        database.create_tables()
+        database.populate_database()
     elif args.list:
         DatabaseUtility().list_schema()
     elif args.query:
         DatabaseUtility().random_vectory_query()
+    elif args.query_red:
+        DatabaseUtility().query_red_vector()
     else:
         parser.print_help()
