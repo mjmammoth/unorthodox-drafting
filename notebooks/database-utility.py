@@ -63,13 +63,6 @@ tables = {
     "vss_colours": "CREATE VIRTUAL TABLE IF NOT EXISTS vss_colours USING vss0(rgb_vector(3));"
 }
 
-load_dotenv(".env")
-url = os.getenv("LIBSQL_URL", "http://127.0.0.1:8080")
-auth_token = os.getenv("LIBSQL_AUTH_TOKEN", "")
-libsql_conn_mode = os.getenv("LIBSQL_MODE", "local")
-database_driver = os.getenv("DATABASE_DRIVER", "sqlite")
-db_name = os.getenv("DATABASE_NAME")
-
 
 class DatabaseUtility:
     def __init__(self):
@@ -95,16 +88,16 @@ class DatabaseUtility:
         import libsql_experimental as libsql
         db_name = db_name if db_name else "local_libsql.db"
         if libsql_conn_mode == "remote":
-            print("Connecting to remote database")
+            print("Connecting to remote database: ", url)
             self.connection = libsql.connect(database=url, auth_token=auth_token)
         elif libsql_conn_mode == "memory":
             print("Connecting to in-memory database")
             self.connection = libsql.connect(":memory:")
         elif libsql_conn_mode == "local":
-            print("Connecting to local database")
+            print("Connecting to local database: ", db_name)
             self.connection = libsql.connect(db_name)
         elif libsql_conn_mode == "remote_sync":
-            print("Connecting to local database with remote sync")
+            print("Connecting to local database (localsync.db) with remote sync: ", url)
             self.connection = libsql.connect("localsync.db", sync_url=url, auth_token=auth_token)
             self.connection.sync()
 
@@ -112,6 +105,7 @@ class DatabaseUtility:
         logging.info("Creating the tables in the database")
         for table_name, table_query in tables.items():
             self.cursor.execute(table_query)
+        self.list_schema()
 
     def populate_database(self):
         logging.info("Populating the database from the JSON file")
@@ -143,7 +137,6 @@ class DatabaseUtility:
 
                     rowid += 1
             hero_id += 1
-            print('Boutta let loose: ', hero_id)
         self.connection.commit()
 
 
@@ -232,26 +225,23 @@ if __name__ == "__main__":
         action="store_true",
     )
     parser.add_argument(
-        "-dr", "--database-driver",
-        help="The database driver to use (sqlite or libsql)",
-        choices=["sqlite", "libsql"],
-        default="sqlite",
-    )
-    parser.add_argument(
-        "-lm", "--libsql-mode",
-        help="The database driver to use (sqlite or libsql)",
-        choices=["remote", "remote_sync", "local", "memory"],
-        default="local",
-    )
-    parser.add_argument(
         "-sv", "--show-vss-version",
         help="Show the VSS extension version",
         action="store_true",
     )
+    parser.add_argument(
+        "-e", "--environment-file",
+        help="Set the environment file to load variables from",
+        default=".env",
+    )
     args = parser.parse_args()
 
-    if args.database_driver: database_driver = args.database_driver
-    if args.libsql_mode: libsql_conn_mode = args.libsql_mode
+    load_dotenv(args.environment_file)
+    url = os.getenv("LIBSQL_URL", "http://127.0.0.1:8080")
+    auth_token = os.getenv("LIBSQL_AUTH_TOKEN", "")
+    libsql_conn_mode = os.getenv("LIBSQL_MODE", "local")
+    database_driver = os.getenv("DATABASE_DRIVER", "sqlite")
+    db_name = os.getenv("DATABASE_NAME")
 
     if args.create:
         DatabaseUtility().create_tables()
