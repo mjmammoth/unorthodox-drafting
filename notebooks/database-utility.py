@@ -73,10 +73,6 @@ class DatabaseUtility:
 
         self.cursor = self.connection.cursor()
 
-        # db = sqlite3.connect(':memory:')
-        # db.enable_load_extension(True)
-        # sqlite_vss.load(db)
-        # db.enable_load_extension(False)
     def connect_sqlite(self, db_name):
         db_name = db_name if db_name else "local_sqlite.db"
         self.connection = sqlite3.connect(db_name)
@@ -154,20 +150,34 @@ class DatabaseUtility:
         logging.info(f"Random vector: {vector}")
         self.query_vector(vector)
 
-    def query_red_vector(self):
-        vector = [255, 0, 0]
-        self.query_vector(vector)
-
     def query_vector(self, vector):
         self.cursor.execute(f'''
-                            SELECT rowid, distance
-                            FROM vss_colours
-                            WHERE vss_search(rgb_vector, '{vector}')
-                            LIMIT 3
+                            SELECT 
+                                h.hero_name, 
+                                v.distance,
+                                hc.dominance,
+                                CASE 
+                                    WHEN hc.dominance = 'primary' THEN 1
+                                    WHEN hc.dominance = 'secondary' THEN 2
+                                    WHEN hc.dominance = 'tertiary' THEN 3
+                                    ELSE 4 -- for any unexpected value
+                                END AS dominance_weight
+                            FROM (
+                                SELECT rowid, distance
+                                FROM vss_colours
+                                WHERE vss_search(rgb_vector, '{vector}')
+                                LIMIT 100
+                            ) AS v
+                            JOIN hero_colours hc ON v.rowid = hc.colour_id
+                            JOIN heroes h ON hc.hero_id = h.id
+                            GROUP BY h.hero_name, v.distance, hc.dominance
+                            ORDER BY dominance_weight, v.distance
                             ''')
 
         results = self.cursor.fetchall()
-        logging.info(f"Query results: {results}")
+        logging.info(f"Hero Name - Distance - Colour Category")
+        for result in results:
+            logging.info(f"{result[0]} - {result[1]} - {result[2]}")
 
 
     def delete_tables(self):
@@ -216,13 +226,8 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-q", "--query",
-        help="Query the vector database with a random RGB vector",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-qr", "--query-red",
-        help="Query the vector database with a RED RGB vector",
-        action="store_true",
+        help="Query the vector database with an RGB vector",
+        type=str,
     )
     parser.add_argument(
         "-sv", "--show-vss-version",
@@ -258,9 +263,10 @@ if __name__ == "__main__":
         database.populate_database()
     elif args.list:
         DatabaseUtility().list_schema()
-    elif args.query:
+    elif args.query == "random":
         DatabaseUtility().random_vectory_query()
-    elif args.query_red:
-        DatabaseUtility().query_red_vector()
+    elif args.query:
+        vector = json.loads(args.query)
+        DatabaseUtility().query_vector(vector)
     else:
         parser.print_help()
