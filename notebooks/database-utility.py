@@ -10,6 +10,8 @@ import colorlog
 from dotenv import load_dotenv
 import sqlite3
 import sqlite_vss
+import cv2
+import numpy as np
 
 LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "DEBUG").upper()
 LOG_FORMAT = "%(log_color)s%(asctime)s %(levelname)s: %(name)s: %(reset)s%(message_log_color)s%(message)s"  # noqa: E501
@@ -47,7 +49,7 @@ tables = {
     "colours": '''
                CREATE TABLE IF NOT EXISTS colours (
                  id INTEGER PRIMARY KEY,
-                 rgb_embedding TEXT
+                 luv_embedding TEXT
                )
                ''',
     "hero_colours": '''
@@ -60,15 +62,18 @@ tables = {
                       FOREIGN KEY (colour_id) REFERENCES colours(id)
                     )
                     ''',
-    "vss_colours": "CREATE VIRTUAL TABLE IF NOT EXISTS vss_colours USING vss0(rgb_vector(3));"
+    "vss_colours": "CREATE VIRTUAL TABLE IF NOT EXISTS vss_colours USING vss0(luv_vector(3));"
 }
 
 
 class DatabaseUtility:
-    def __init__(self):
+    def __init__(self, database_driver="sqlite", db_name=None, url=None, auth_token=None, libsql_conn_mode="local"):
         if database_driver == "sqlite":
+            db_name = db_name if db_name else "local_sqlite.db"
+            logging.info(f"Connecting to SQLite database: {db_name}")
             self.connect_sqlite(db_name)
         elif database_driver == "libsql":
+            logging.info(f"Connecting to LibSQL database: {url} with mode: {libsql_conn_mode}")
             self.connect_libsql(url, auth_token, libsql_conn_mode)
 
         self.cursor = self.connection.cursor()
@@ -117,14 +122,13 @@ class DatabaseUtility:
             # For each colour type, insert the colour data into the colours table and the vector data into the vss_colours table
             for color_type in ['primary_colours', 'secondary_colours', 'tertiary_colours']:
                 for color in hero[color_type]:
-                    color_json = json.dumps(color)
+                    color_json = json.dumps(self.rgb_to_luv(color))
 
                     self.cursor.execute('''
-                    INSERT INTO colours (id, rgb_embedding) VALUES (?, ?)
+                    INSERT INTO colours (id, luv_embedding) VALUES (?, ?)
                     ''', (rowid, color_json))
 
-                    embedded = json.dumps(color)
-                    self.cursor.execute("INSERT INTO vss_colours (rowid, rgb_vector) VALUES (?, ?)", (rowid, embedded))
+                    self.cursor.execute("INSERT INTO vss_colours (rowid, luv_vector) VALUES (?, ?)", (rowid, color_json))
 
                     # Insert hero-colour relationship into hero_colours table
                     self.cursor.execute('''
@@ -150,7 +154,14 @@ class DatabaseUtility:
         logging.info(f"Random vector: {vector}")
         self.query_vector(vector)
 
+    def rgb_to_luv(self, rgb):
+        rgb = np.array([rgb], dtype=np.uint8)
+        bgr = cv2.cvtColor(rgb.reshape(1, 1, 3), cv2.COLOR_RGB2BGR)
+        luv = cv2.cvtColor(bgr, cv2.COLOR_BGR2Luv)
+        return luv[0][0].tolist()
+
     def query_vector(self, vector):
+        colour_json = self.rgb_to_luv(vector)
         self.cursor.execute(f'''
                             SELECT 
                                 h.hero_name, 
@@ -165,7 +176,7 @@ class DatabaseUtility:
                             FROM (
                                 SELECT rowid, distance
                                 FROM vss_colours
-                                WHERE vss_search(rgb_vector, '{vector}')
+                                WHERE vss_search(luv_vector, '{colour_json}')
                                 LIMIT 100
                             ) AS v
                             JOIN hero_colours hc ON v.rowid = hc.colour_id
@@ -248,25 +259,26 @@ if __name__ == "__main__":
     database_driver = os.getenv("DATABASE_DRIVER", "sqlite")
     db_name = os.getenv("DATABASE_NAME")
 
+    database = DatabaseUtility(database_driver, db_name, url, auth_token, libsql_conn_mode)
+
     if args.create:
-        DatabaseUtility().create_tables()
+        database.create_tables()
     elif args.show_vss_version:
-        DatabaseUtility().select_vss_version()
+        database.select_vss_version()
     elif args.populate:
-        DatabaseUtility().populate_database()
+        database.populate_database()
     elif args.delete:
-        DatabaseUtility().delete_tables()
+        database.delete_tables()
     elif args.recreate:
-        database = DatabaseUtility()
         database.delete_tables()
         database.create_tables()
         database.populate_database()
     elif args.list:
-        DatabaseUtility().list_schema()
+        database.list_schema()
     elif args.query == "random":
-        DatabaseUtility().random_vectory_query()
+        database.random_vectory_query()
     elif args.query:
         vector = json.loads(args.query)
-        DatabaseUtility().query_vector(vector)
+        database.query_vector(vector)
     else:
         parser.print_help()
