@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import db from '@/db/LibSQLDatabase.ts';
 
 type ResponseData = {
   heroes: string[]

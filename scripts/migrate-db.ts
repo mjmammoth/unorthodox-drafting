@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { migrate } from 'drizzle-orm/libsql/migrator';
-import { db, client } from '@/db/LibSQLDatabase.ts';
+import { db, client } from '@/lib/DB';
 
 async function main() {
   console.log('Migrating database...');
