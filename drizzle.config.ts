@@ -1,13 +1,14 @@
 import 'dotenv/config';
-import { defineConfig } from 'drizzle-kit'
+import { Config } from 'drizzle-kit'
+import { env } from '@/lib/env.mjs';
 
-export default defineConfig({
+export default {
+  verbose: true,
   schema: './src/models/schema.ts',
   out: './migrations',
   driver: 'turso',
   dbCredentials: {
-    url: process.env.DB_URL as string,
-    authToken: process.env.DB_AUTH_TOKEN as string,
+    url: env.DB_URL,
+    authToken: env.DB_AUTH_TOKEN,
   },
-  verbose: true,
-})
+} satisfies Config;

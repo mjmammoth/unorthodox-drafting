@@ -1,6 +1,6 @@
 {
-  "id": "329338d7-49f1-4447-9c1a-bc2dad27946b",
-  "prevId": "a2638e45-c455-44c0-8b38-b83481290723",
+  "id": "b3e3ce52-28d8-4afa-9d8d-0781a7c7763c",
+  "prevId": "22ef7d1e-7dbf-4266-b4b3-0f013375e600",
   "version": "5",
   "dialect": "sqlite",
   "tables": {
@@ -34,6 +34,63 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "hero_colours": {
+      "name": "hero_colours",
+      "columns": {
+        "hero_id": {
+          "name": "hero_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "colour_id": {
+          "name": "colour_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "dominance": {
+          "name": "dominance",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "hero_colours_hero_id_heroes_id_fk": {
+          "name": "hero_colours_hero_id_heroes_id_fk",
+          "tableFrom": "hero_colours",
+          "columnsFrom": [
+            "hero_id"
+          ],
+          "tableTo": "heroes",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        },
+        "hero_colours_colour_id_colours_id_fk": {
+          "name": "hero_colours_colour_id_colours_id_fk",
+          "tableFrom": "hero_colours",
+          "columnsFrom": [
+            "colour_id"
+          ],
+          "tableTo": "colours",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "heroes": {
       "name": "heroes",
       "columns": {
@@ -50,67 +107,18 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "image_path": {
-          "name": "image_path",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "heroes_name_unique": {
+          "name": "heroes_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "heroes_colours": {
-      "name": "heroes_colours",
-      "columns": {
-        "hero_id": {
-          "name": "hero_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "colour_id": {
-          "name": "colour_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "heroes_colours_hero_id_heroes_id_fk": {
-          "name": "heroes_colours_hero_id_heroes_id_fk",
-          "tableFrom": "heroes_colours",
-          "columnsFrom": [
-            "hero_id"
-          ],
-          "tableTo": "heroes",
-          "columnsTo": [
-            "id"
-          ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
-        },
-        "heroes_colours_colour_id_colours_id_fk": {
-          "name": "heroes_colours_colour_id_colours_id_fk",
-          "tableFrom": "heroes_colours",
-          "columnsFrom": [
-            "colour_id"
-          ],
-          "tableTo": "colours",
-          "columnsTo": [
-            "id"
-          ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
-        }
-      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
