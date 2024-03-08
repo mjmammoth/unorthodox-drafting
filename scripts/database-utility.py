@@ -258,8 +258,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     load_dotenv(args.environment_file)
-    url = os.getenv("LIBSQL_URL", "http://127.0.0.1:8080")
-    auth_token = os.getenv("LIBSQL_AUTH_TOKEN", "")
+    url = os.getenv("DB_URL", "http://127.0.0.1:8080")
+    auth_token = os.getenv("DB_AUTH_TOKEN", "")
     libsql_conn_mode = os.getenv("LIBSQL_MODE", "local")
     database_driver = os.getenv("DATABASE_DRIVER", "sqlite")
     db_name = os.getenv("DATABASE_NAME")

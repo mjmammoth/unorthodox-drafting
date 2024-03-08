@@ -1,23 +1,22 @@
 export const dynamic = 'force-dynamic'
-import { NextRequest, NextResponse } from 'next';
-
-type ResponseData = {
-  heroes: string[]
-}
-
-// export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-//   res.setHeader('Content-Type', 'application/json');
-//   res.status(200).json({ heroes: ['Batman', 'Superman', 'Ironman'] });
-//   // const result = await db.select().from(heroes).all();
-//   // console.log(result);
-//   // res.status(200).json({ heroes: result });
-// }
+import { db, statelessClient } from '@/lib/DB';
+import { heroes } from '@/models';
 
 export async function GET(request: Request) {
   console.log('GET /api/heroes');
   console.log('request', request);
+  // const result = await db.select().from(heroes).values();
+  console.log('----------');
+  const result = await statelessClient.execute({
+    sql : "SELECT rowid, distance FROM vss_colours WHERE vss_search(vector, '[0.000009, 0.000001, 0.9999123]') LIMIT 15;",
+    args: [],
+  });
+  const serialized = JSON.stringify(result.rows.map((row) => ({
+    ...row,
+    rowid: row.rowid.toString(),
+  })));
   return Response.json(
-    { heroes: ['Batman', 'Superman', 'Ironman'] },
+    JSON.parse(serialized),
     {
       status: 200,
       headers: {

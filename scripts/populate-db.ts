@@ -5,7 +5,7 @@ import { heroes, colours, heroColours } from '@/models';
 import { eq, sql } from 'drizzle-orm';
 import { ColorTranslator, Harmony, Mix } from 'colortranslator';
 
-type RGB = [ number, number, number ];
+type RGB = [number, number, number];
 
 interface SourceHero {
   id: number;
@@ -33,27 +33,33 @@ class DatabasePopulator {
   }
 
   private async insertHero(hero: SourceHero): Promise<void> {
-    // If one of the colours are undefined, skip the hero
-    if (!hero.primary_colours || !hero.secondary_colours || !hero.tertiary_colours) {
-      console.log(`Skipping ${hero.name} due to missing colours`);
-      return;
-    }
+    try {
+      if (!hero.primary_colours || !hero.secondary_colours || !hero.tertiary_colours) {
+        console.log(`Skipping ${hero.name} due to missing colours`);
+        return;
+      }
 
-    await db.insert(heroes).values({
-      id: hero.id,
-      name: hero.name,
-    });
+      await db.insert(heroes).values({
+        id: hero.id,
+        name: hero.name,
+      });
+      console.log(`Inserted hero ${hero.name} successfully`);
 
-    for (const colour of hero.primary_colours) {
-      await this.insertAndLinkColour(colour, hero.id, 1);
-    }
+      for (const colour of hero.primary_colours) {
+        await this.insertAndLinkColour(colour, hero.id, 1);
+      }
 
-    for (const colour of hero.secondary_colours) {
-      await this.insertAndLinkColour(colour, hero.id, 2);
-    }
+      for (const colour of hero.secondary_colours) {
+        await this.insertAndLinkColour(colour, hero.id, 2);
+      }
 
-    for (const colour of hero.tertiary_colours) {
-      await this.insertAndLinkColour(colour, hero.id, 3);
+      for (const colour of hero.tertiary_colours) {
+        await this.insertAndLinkColour(colour, hero.id, 3);
+      }
+      console.log(`Completed processing for ${hero.name}`);
+    } catch (error) {
+      console.error(`Failed to insert ${hero.name}:`, error);
+      // Optionally, re-throw the error or handle it based on your application's needs
     }
   }
 
@@ -92,7 +98,7 @@ class DatabasePopulator {
       return existingColour[0].id;
     }
 
-    const insertedId = await db.insert(colours).values({colourEmbedding: colourEmbedding, hex: colourHex}).returning({ id: colours.id });
+    const insertedId = await db.insert(colours).values({ colourEmbedding: colourEmbedding, hex: colourHex }).returning({ id: colours.id });
     return insertedId[0].id;
   }
 
