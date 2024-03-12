@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: Unorthodox Drafting for Dota 2 API
+  description: This API provides endpoints for querying Dota 2 heroes with unorthodox filters.
+  version: "0.0.1"
+servers:
+  - url: https://unorthodox-drafting.vercel.app
+    description: Production server
+paths:
+  /heroes/search:
+    get:
+      summary: Search for Dota 2 heroes based on filters
+      operationId: searchHeroes
+      parameters:
+        - in: query
+          name: role
+          schema:
+            type: string
+          description: Filter by hero role (e.g., Support, Carry).
+        - in: query
+          name: attribute
+          schema:
+            type: string
+          description: Filter by primary attribute (Strength, Agility, Intelligence).
+        - in: query
+          name: complexity
+          schema:
+            type: integer
+          description: Filter by complexity rating (1 to 3).
+        - in: query
+          name: colors
+          schema:
+            type: string
+          description: Filter by colors (primary, secondary, tertiary).
+      responses:
+        '200':
+          description: An array of heroes matching the filters, sorted by relevance.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hero'
+components:
+  schemas:
+    Hero:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the hero.
+        name:
+          type: string
+          description: The hero's name.
+        role:
+          type: array
+          items:
+            type: string
+          description: Roles the hero can play.
+        attribute:
+          type: string
+          description: The hero's primary attribute.
+        complexity:
+          type: integer
+          description: The hero's complexity rating.
+        colors:
+          type: object
+          description: Color categories of the hero, each with multiple possible colors.
+          properties:
+            primaryColors:
+              type: array
+              items:
+                type: array
+                items:
+                  type: integer
+                  minimum: 0
+                  maximum: 255
+                minItems: 3
+                maxItems: 3
+              description: Array of primary colors, each represented as an RGB array.
+            secondaryColors:
+              type: array
+              items:
+                type: array
+                items:
+                  type: integer
+                  minimum: 0
+                  maximum: 255
+                minItems: 3
+                maxItems: 3
+              description: Array of secondary colors, each represented as an RGB array.
+            tertiaryColors:
+              type: array
+              items:
+                type: array
+                items:
+                  type: integer
+                  minimum: 0
+                  maximum: 255
+                minItems: 3
+                maxItems: 3
+              description: Array of tertiary colors, each represented as an RGB array.
+      required:
+        - id
+        - name
+        - role
+        - attribute
+        - complexity
+        - colors

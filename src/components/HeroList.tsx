@@ -1,11 +1,9 @@
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { CardContent, Card } from "@/components/ui/card"
-import { HeroCardProps } from "./heroes"
+import { HeroCard } from "@/types/hero"
 
-export function HeroCard({ hero }: HeroCardProps ) {
-  const heroName = hero.localized_name;
-  const formattedName = heroName.toLowerCase().replace(/\s+/g, "_").replace(/-/g, "");
-  const portraitUrl = `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${formattedName}.png`;
+export function HeroCard({ hero }: HeroCard ) {
+  const portraitUrl = `https://cdn.cloudflare.steamstatic.com/${hero.img}`;
 
   const roleTags = hero.roles.map((role) => (
     <span key={role} className="px-2 py-1 bg-gray-200 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 rounded-md">{role}</span>
