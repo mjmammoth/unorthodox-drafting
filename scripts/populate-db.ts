@@ -3,7 +3,7 @@ import fs from 'fs';
 import { db } from '@/lib/DB';
 import { heroes, colours, heroColours } from '@/models';
 import { eq, sql } from 'drizzle-orm';
-import { ColorTranslator, Harmony, Mix } from 'colortranslator';
+import { ColorTranslator } from 'colortranslator';
 
 type RGB = [number, number, number];
 
