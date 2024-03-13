@@ -1,8 +1,8 @@
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { CardContent, Card } from "@/components/ui/card"
-import { HeroCard } from "@/types/hero"
+import { HeroCardProps } from "@/types/hero"
 
-export function HeroCard({ hero }: HeroCard ) {
+export function HeroCard({ hero }: HeroCardProps ) {
   const portraitUrl = `https://cdn.cloudflare.steamstatic.com/${hero.img}`;
 
   const roleTags = hero.roles.map((role) => (
