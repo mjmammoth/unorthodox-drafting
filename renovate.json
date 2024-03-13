@@ -6,8 +6,11 @@
   "baseBranches": ["develop"],
   "automerge": true,
   "automergeType": "branch",
-  "major": {
-    "automerge": true
-  },
-  "schedule": [ "after 6am" ]
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    }
+  ],
+  "schedule": [ "before 4am" ]
 }
