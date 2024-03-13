@@ -6,6 +6,10 @@
   "baseBranches": ["develop"],
   "automerge": true,
   "automergeType": "branch",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
