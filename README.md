@@ -8,4 +8,5 @@
 
 <p align="center">
     <a href="https://therealsujitk-vercel-badge.vercel.app/?app=unorthodox-drafting&style=flat-square"><img src="https://therealsujitk-vercel-badge.vercel.app/?app=unorthodox-drafting&style=flat-square" alt="Vercel Deploy"></a>
+    <a href="https://renovatebot.com/"><img src="https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square" alt="Renovate Enabled"></a>
 </p>
