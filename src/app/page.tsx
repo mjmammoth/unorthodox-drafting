@@ -1,6 +1,5 @@
 import { Header } from "../components/header";
 import { Footer } from "../components/footer";
-import { WinrateSlider } from "../components/winrate-slider";
 import SearchSection from "../components/searchSection";
 
 export default function Home() {
