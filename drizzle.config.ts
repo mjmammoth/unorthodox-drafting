@@ -4,7 +4,7 @@ import { env } from '@/lib/env.mjs';
 
 export default {
   verbose: true,
-  schema: './src/models/schema.ts',
+  schema: './src/models/*',
   out: './migrations',
   driver: 'turso',
   dbCredentials: {
