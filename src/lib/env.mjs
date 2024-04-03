@@ -8,7 +8,7 @@ export const env = createEnv({
     DB_URL: z.string().min(1),
     SL_DB_URL : z.string().min(1),
     DB_AUTH_TOKEN: z.string().optional(),
-    NEXTAUTH_URL: z.string(),
+    NEXTAUTH_URL: z.string().optional(),
     NEXTAUTH_URL_INTERNAL: z.string(),
     NEXTAUTH_SECRET: z.string(),
     AUTH_STEAM_SECRET: z.string(),
