@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/libsql';
 import { createClient } from '@libsql/client';
-import { env } from '@/lib/env.mjs';
+import { env } from './env.mjs';
 import { createClient as createStatelessClient} from "libsql-stateless-easy";
 
 const statelessDBUrl = env.SL_DB_URL || env.DB_URL;

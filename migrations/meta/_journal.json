@@ -15,6 +15,27 @@
       "when": 1709378657888,
       "tag": "0001_odd_hercules",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1712003396478,
+      "tag": "0002_gray_dreadnoughts",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1712157062637,
+      "tag": "0003_square_iron_lad",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1712157144575,
+      "tag": "0004_heavy_fenris",
+      "breakpoints": true
     }
   ]
 }

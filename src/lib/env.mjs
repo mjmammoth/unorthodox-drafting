@@ -8,6 +8,10 @@ export const env = createEnv({
     DB_URL: z.string().min(1),
     SL_DB_URL : z.string().min(1),
     DB_AUTH_TOKEN: z.string().optional(),
+    NEXTAUTH_URL: z.string().optional(),
+    NEXTAUTH_URL_INTERNAL: z.string(),
+    NEXTAUTH_SECRET: z.string(),
+    AUTH_STEAM_SECRET: z.string(),
   },
   client: {
     OPENDOTA_API_URL: z.string().optional(),
@@ -19,5 +23,9 @@ export const env = createEnv({
     DB_AUTH_TOKEN: process.env.DB_AUTH_TOKEN,
     OPENDOTA_API_URL: process.env.OPENDOTA_API_URL,
     STEAMCDN_API_URL: process.env.STEAMCDN_API_URL,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    NEXTAUTH_URL_INTERNAL: process.env.NEXTAUTH_URL_INTERNAL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    AUTH_STEAM_SECRET: process.env.AUTH_STEAM_SECRET,
   },
 });
