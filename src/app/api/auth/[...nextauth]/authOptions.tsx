@@ -13,7 +13,7 @@ export function getAuthOptions(req: NextRequest): NextAuthOptions {
     providers: [
       SteamProvider(req, {
         clientSecret: env.AUTH_STEAM_SECRET!,
-        callbackUrl: 'http://localhost:3000/api/auth/callback'
+        callbackUrl: env.NEXTAUTH_URL + '/api/auth/callback'
       })
     ],
     session: {
