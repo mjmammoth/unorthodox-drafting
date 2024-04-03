@@ -2,13 +2,13 @@ import { DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator, DropdownM
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { getServerSession } from 'next-auth'
 import { AuthButton } from "./authButton"
-import { getAuthOptions } from "@/app/api/auth/[...nextauth]/route"
+import { getAuthOptions } from "@/app/api/auth/[...nextauth]/authOptions"
 
 import { FirebookIcon } from "../components/icons";
 
 export async function Header() {
+  // @ts-expect-error
   const session = await getServerSession(getAuthOptions())
-  console.log('session', session)
   return (
     <section className="flex items-center justify-center w-full py-6 md:py-7 lg:py-8 xl:py-9 bg-gradient-to-r from-cyan-500 to-blue-500">
       <div className="flex flex-row w-full max-w-screen-xl">
@@ -28,7 +28,7 @@ export async function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="h-20 w-20">
-              <AvatarImage alt="Profile Image" src={session?.user.image} />
+              <AvatarImage alt="Profile Image" src={session?.user?.image ?? ""} />
               <AvatarFallback>MM</AvatarFallback>
               <span className="sr-only">Toggle user menu</span>
             </Avatar>
