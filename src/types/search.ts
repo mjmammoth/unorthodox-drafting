@@ -2,13 +2,13 @@ export type FilterActions =
   | { type: 'SET_COLOUR', payload: string }
   ;
 
-export type Colour = string;
+export type HexColour = string;
 
 export interface ColourFilterProps {
-  colour: Colour;
-  setColour: (colour: Colour) => void;
+  hexColour: HexColour;
+  setColour: (hexColour: HexColour) => void;
 }
 
 export interface FilterState {
-  colour: Colour;
+  hexColour: HexColour;
 }

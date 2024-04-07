@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth'
 import { AuthButton } from "./authButton"
 import { getAuthOptions } from "@/app/api/auth/[...nextauth]/authOptions"
 
-import { FirebookIcon } from "../components/icons";
+import { FirebookIcon } from "@/components/icons";
 
 export async function Header() {
   // @ts-expect-error

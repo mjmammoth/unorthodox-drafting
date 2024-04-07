@@ -9,6 +9,6 @@ export interface Hero {
   img: string;
 }
 
-export interface HeroCardProps {
+export interface HeroProps {
   hero: Hero;
 }

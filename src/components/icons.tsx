@@ -1,10 +1,5 @@
 import React from 'react';
 
-// interface IconProps {
-//   wh?: string;
-//   className?: string;
-// }
-
 export function FirebookIcon ({ wh = '42px' }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={wh} height={wh} viewBox="0 0 213.6 208.2">
@@ -16,29 +11,3 @@ export function FirebookIcon ({ wh = '42px' }) {
     </svg>
   );
 };
-
-export function FileQuestionIcon({ wh = '24' }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24" 
-      width={wh} 
-      height={wh} >
-    <path d="M4,23H20a1,1,0,0,0,1-1V6a1,1,0,0,0-.293-.707l-4-4A1,1,0,0,0,16,1H4A1,1,0,0,0,3,2V22A1,1,0,0,0,4,23ZM5,3H15.586L19,6.414V21H5Zm8,13v1a1,1,0,0,1-2,0V16a1,1,0,0,1,2,0Zm1.954-7.429a3.142,3.142,0,0,1-1.789,3.421.4.4,0,0,0-.165.359V13a1,1,0,0,1-2,0v-.649a2.359,2.359,0,0,1,1.363-2.191A1.145,1.145,0,0,0,12.981,8.9a1.069,1.069,0,0,0-.8-.88.917.917,0,0,0-.775.2,1.155,1.155,0,0,0-.4.9,1,1,0,1,1-2,0,3.151,3.151,0,0,1,1.127-2.436,2.946,2.946,0,0,1,2.418-.632A3.085,3.085,0,0,1,14.954,8.571Z"/>
-    </svg>
-  );
-}
-
-export function InfoIcon({ wh = '20' }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={wh}
-      height={wh}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-.5 15h-1v-1h1v1zm0-3h-1v-5h1v5z" />
-    </svg>
-  );
-}
