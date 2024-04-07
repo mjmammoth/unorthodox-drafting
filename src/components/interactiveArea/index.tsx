@@ -18,18 +18,24 @@ function filtersReducer(state: FilterState, action: FilterActions) {
 }
 
 const initialState: FilterState = {
-  hexColour: '#123524'
+  hexColour: '#13BA6D'
 };
+
+const initialHeroResults: Hero[] = [76,36,80,111,108].map(getHeroById).filter(Boolean) as Hero[];
+
+function getHeroById(id: number): Hero | undefined {
+  return combinedHeroData.find(hero => hero.id === id);
+}
 
 export default function InteractiveArea() {
   const [filterState, dispatch] = useReducer(filtersReducer, initialState);
-  const [HeroResults, setHeroResults] = useState<Hero[]>([]);
+  const [HeroResults, setHeroResults] = useState<Hero[]>(initialHeroResults);
 
   useEffect(() => {
     console.log('Filter state change:', filterState);
     const searchResults =  search(filterState)
     searchResults.then((data) => {
-      const heroes = data.map((id: number) => combinedHeroData.find(hero => hero.id === id)).filter(Boolean) as Hero[];
+      const heroes = data.map(getHeroById).filter(Boolean) as Hero[];
       setHeroResults(heroes);
     }, (error) => {
       console.error('Error searching:', error);
