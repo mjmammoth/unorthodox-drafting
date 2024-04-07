@@ -1,22 +1,15 @@
 "use client"
-import { signIn, signOut } from "next-auth/react"
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import { signIn } from "next-auth/react"
 
-type AuthButtonProps = {
-  loggedIn: boolean;
-};
-
-export function AuthButton({loggedIn}: AuthButtonProps){
+export function AuthButton(){
   return (
-    <DropdownMenuItem onSelect={(e: Event) => {
-      e.preventDefault()
-      if (loggedIn) {
-        signOut();
-      } else {
-        signIn();
-      }
-    }}>
-      {loggedIn ? "Sign Out" : "Sign In"}
-    </DropdownMenuItem>
+    <div className="flex items-center justify-center bg-slate-900 text-white rounded-md">
+      <button 
+        onClick={() => signIn('steam')}
+        className="bg-steam-lightGray  text px-5 py-3 rounded-md font-bold flex items-center space-x-4 hover:bg-gray-600 transition duration-75">
+        <i className="fa-brands fa-steam text-xl"></i>
+        <span>Login with Steam</span>
+      </button>
+    </div>
   )
 }
