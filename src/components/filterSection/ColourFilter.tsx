@@ -1,15 +1,35 @@
-import { ColourFilterProps } from '@/types';
+import React, { useState, useEffect } from 'react';
+import { Input } from "@/components/ui/input"
+import { BaseFilter } from './BaseFilter';
+import {  ColourFilterProps, HexColour } from '@/types';
 
-const ColourFilter = ({ hexColour, setColour }: ColourFilterProps) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700">Colour Scheme</label>
-    <input
-      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      type="color"
-      value={hexColour}
-      onChange={(e) => setColour(e.target.value)}
-    />
-  </div>
-);
+export const ColourFilter: React.FC<ColourFilterProps> = ({ label, filterState, onStateChange }) => {
+  const [colourValue, setColour] = useState<HexColour>(filterState);
+  const [debouncedColour, setDebouncedColour] = useState<HexColour>(filterState);
 
-export default ColourFilter;
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedColour(colourValue);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [colourValue]);
+  
+  useEffect(() => {
+    onStateChange(debouncedColour);
+  }, [debouncedColour]);
+
+  return (
+    <BaseFilter label={label}>
+      <>
+        <Input
+          type="color"
+          value={colourValue}
+          onChange={value => setColour(value.target.value as unknown as HexColour)}
+          className="mt-1 h-6"
+          aria-label={`${label} number`}
+        />
+      </>
+    </BaseFilter>
+  );
+};
