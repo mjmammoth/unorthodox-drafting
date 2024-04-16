@@ -5,7 +5,6 @@ import FilterSection from '@/components/filterSection'
 import ResultSection from '@/components/resultSection'
 import { search } from './actions'
 import { Reorder } from "framer-motion";
-import { ToastContainer } from 'react-toastify';
 
 // Data
 import combinedHeroData from '@/data/combined.json';

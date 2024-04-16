@@ -16,6 +16,7 @@ export const NumericFilter: React.FC<NumericFilterProps> = ({ label, filterState
   
   useEffect(() => {
     onStateChange({ value: numberValue, operator: operator});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberValue, operator]);
 
 

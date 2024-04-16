@@ -17,6 +17,7 @@ export const ColourFilter: React.FC<ColourFilterProps> = ({ label, filterState, 
   
   useEffect(() => {
     onStateChange(debouncedColour);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedColour]);
 
   return (

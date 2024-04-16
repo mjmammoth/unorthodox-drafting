@@ -9,6 +9,7 @@ export const DropdownFilter: React.FC<DropdownFilterProps> = ({ label, filterSta
 
   useEffect(() => {
     onStateChange(selectedOption);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption]);
   
   return (

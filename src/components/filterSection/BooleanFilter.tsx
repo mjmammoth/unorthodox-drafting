@@ -10,6 +10,7 @@ export const BooleanFilter: React.FC<BooleanFilterProps> = ({ label, id, filterS
   useEffect(() => {
     if (booleanValue === 'indeterminate') return;
     onStateChange(booleanValue);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booleanValue]);
 
 
