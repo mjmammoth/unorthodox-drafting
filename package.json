@@ -11,7 +11,7 @@
     "migrate": "npx tsx scripts/migrate-db.ts"
   },
   "dependencies": {
-    "@auth/core": "^0.31.0",
+    "@auth/core": "^0.32.0",
     "@auth/drizzle-adapter": "^1.0.0",
     "@libsql/client": "^0.6.0",
     "@radix-ui/react-avatar": "^1.0.4",
